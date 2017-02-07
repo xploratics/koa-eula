@@ -1,0 +1,55 @@
+{
+  "name": "koa-eula",
+  "version": "1.3.0",
+  "description": "Koa eula middleware.",
+  "keywords": [
+    "auth",
+    "authn",
+    "authentication",
+    "authz",
+    "authorization",
+    "http",
+    "jwt",
+    "json",
+    "middleware",
+    "token",
+    "eula",
+    "koa",
+    "license"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xploratics/koa-eula.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xploratics/koa-eula/issues"
+  },
+  "homepage": "https://github.com/xploratics/koa-eula",
+  "author": {
+    "name": "Dany Laporte",
+    "email": "dany.laporte@gmail.com"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "main": "./lib",
+  "dependencies": {
+    "jsonwebtoken": "5.x.x",
+    "koa-unless": "0.0.1",
+    "thunkify": "~2.1.x"
+  },
+  "devDependencies": {
+    "koa": "koajs/koa",
+    "mocha": "~2.2.1",
+    "supertest": "~0.15.0"
+  },
+  "engines": {
+    "node": ">= 0.12.0"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec --bail ./test.js"
+  }
+}
