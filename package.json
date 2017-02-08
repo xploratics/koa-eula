@@ -1,6 +1,6 @@
 {
   "name": "koa-eula",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Koa eula middleware.",
   "keywords": [
     "authz",
