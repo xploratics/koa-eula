@@ -59,25 +59,23 @@ var eula = require('koa-eula');
 var app = koa();
 
 // Custom 403 handling if you don't want to expose koa-eula errors to users
-app.use(function *(next){
-  try {
-    yield next;
-  } catch (err) {
+app.use(function(ctx, next) {
+  return next().catch((err) => {
     if (401 == err.status) {
-      this.status = 403;
-      this.body = 'Protected resource, use Eula header to get access\n';
+      ctx.status = 401;
+      ctx.body = 'Protected resource, use Eula header to get access\n';
     } else {
       throw err;
     }
-  }
+  });
 });
 
 // Unprotected middleware
-app.use(function *(next){
-  if (this.url.match(/^\/public/)) {
-    this.body = 'unprotected\n';
+app.use(function(ctx, next) {
+  if (ctx.url.match(/^\/public/)) {
+    ctx.body = 'unprotected\n';
   } else {
-    yield next;
+    return next();
   }
 });
 
@@ -85,9 +83,9 @@ app.use(function *(next){
 app.use(eula({ secret: 'shared-secret' }));
 
 // Protected middleware
-app.use(function *(){
-  if (this.url.match(/^\/api/)) {
-    this.body = 'protected\n';
+app.use(function (ctx){
+  if (ctx.url.match(/^\/api/)) {
+    ctx.body = 'protected\n';
   }
 });
 
