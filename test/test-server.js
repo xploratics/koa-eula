@@ -1,5 +1,5 @@
 var koa = require('koa');
-var koaeula = require('./index');
+var koaeula = require('../lib');
 
 var profile = {
   id: 123

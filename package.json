@@ -1,6 +1,6 @@
 {
   "name": "koa-eula",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Koa eula middleware.",
   "keywords": [
     "authz",
@@ -26,27 +26,26 @@
     "name": "Dany Laporte",
     "email": "dany.laporte@gmail.com"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/MIT"
-    }
-  ],
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/MIT"
+  }],
   "main": "./lib",
   "dependencies": {
-    "jsonwebtoken": "5.x.x",
-    "koa-unless": "0.0.1",
-    "thunkify": "~2.1.x"
+    "jsonwebtoken": "^7.3.0",
+    "koa-unless": "^1.0.0"
   },
   "devDependencies": {
-    "koa": "koajs/koa",
-    "mocha": "~2.2.1",
-    "supertest": "~0.15.0"
+    "koa": "^2.0.1",
+    "mocha": "~3.2.0",
+    "nyc": "^10.1.2",
+    "supertest": "~3.0.0"
   },
   "engines": {
-    "node": ">= 0.12.0"
+    "node": ">= 7.6.0"
   },
   "scripts": {
-    "test": "mocha --reporter spec --bail ./test.js"
+    "test": "nyc npm run test-only",
+    "test-only": "mocha --reporter spec --bail test/test.js"
   }
 }
