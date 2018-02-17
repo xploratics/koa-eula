@@ -1,6 +1,6 @@
 {
   "name": "koa-eula",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Koa eula middleware.",
   "keywords": [
     "authz",
@@ -26,12 +26,10 @@
     "name": "Dany Laporte",
     "email": "dany.laporte@gmail.com"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/MIT"
-    }
-  ],
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/MIT"
+  }],
   "main": "./lib",
   "dependencies": {
     "jsonwebtoken": "^8.1.1",
