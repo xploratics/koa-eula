@@ -12,7 +12,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: 'shhhh' }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .expect(403)
       .end(done);
@@ -22,7 +22,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: 'shhhh' }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'wrong')
       .expect(403)
@@ -34,7 +34,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: 'shhhh' }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Beer sometoken')
       .expect(403)
@@ -50,7 +50,7 @@ describe('failure tests', function () {
       getToken: ctx => ctx.throw(403, 'Bad Eula\n')
     }));
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .expect(403)
       .expect('Bad Eula\n')
@@ -67,7 +67,7 @@ describe('failure tests', function () {
         return jwt.sign({ foo: 'bar' }, secret);
       }
     }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .expect(403)
       .expect('Invalid eula token\n')
@@ -78,7 +78,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: 'shhhh' }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer wrongjwt')
       .expect(403)
@@ -92,7 +92,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: 'different-shhhh', debug: true }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(403)
@@ -107,9 +107,11 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: secret, cookie: 'jwt' }));
-    app.use(async next => this.body = this.state.eula);
+    app.use(ctx => {
+      ctx.body = ctx.state.eula;
+    });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Cookie', 'jwt=bad' + token + ';')
       .expect(403)
@@ -124,7 +126,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: 'shhhhhh', audience: 'not-expected-audience', debug: true }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(403)
@@ -138,7 +140,7 @@ describe('failure tests', function () {
     var app = new koa();
 
     app.use(koaeula({ secret: 'shhhhhh', debug: true }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(403)
@@ -152,7 +154,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: 'shhhhhh', issuer: 'http://wrong', debug: true }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(403)
@@ -166,7 +168,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ debug: true }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(500)
@@ -180,7 +182,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: 'wrong secret', debug: true }));
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(403)
@@ -199,7 +201,7 @@ describe('passthrough tests', function () {
       ctx.body = ctx.state.eula;
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .expect(204) // No content
       .expect('')
@@ -225,7 +227,7 @@ describe('success tests', function () {
       ctx.body = ctx.state.eula;
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(200)
@@ -253,7 +255,7 @@ describe('success tests', function () {
       ctx.body = ctx.state.eula;
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/?token=' + token)
       .expect(200)
       .expect(validEulaResponse)
@@ -276,7 +278,7 @@ describe('success tests', function () {
       ctx.body = ctx.state.eula;
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Cookie', 'jwt=' + token + ';')
       .set('Eula', 'Bearer ' + invalidToken)
@@ -300,7 +302,7 @@ describe('success tests', function () {
       ctx.body = ctx.state.eula;
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Cookie', 'jwt=' + token + ';')
       .expect(200)
@@ -324,7 +326,7 @@ describe('success tests', function () {
       ctx.body = ctx.state.jwtdata;
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(200)
@@ -353,7 +355,7 @@ describe('success tests', function () {
       ctx.body = ctx.state.eula;
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(200)
@@ -376,7 +378,7 @@ describe('success tests', function () {
       ctx.body = { token: ctx.state.testTokenKey };
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(200)
@@ -403,7 +405,7 @@ describe('success tests', function () {
       ctx.body = ctx.state.eula;
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(200)
@@ -429,7 +431,7 @@ describe('unless tests', function () {
       ctx.body = { success: true };
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/public')
       .set('Eula', 'wrong')
       .expect(200)
@@ -447,7 +449,7 @@ describe('unless tests', function () {
       ctx.body = { success: true };
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/private')
       .set('Eula', 'wrong')
       .expect(403)
@@ -470,7 +472,7 @@ describe('unless tests', function () {
       ctx.body = ctx.state.jwtdata;
     });
 
-    request(app.listen())
+    request(app.callback())
       .get('/')
       .set('Eula', 'Bearer ' + token)
       .expect(200)
