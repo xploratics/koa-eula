@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/xploratics/koa-eula.svg)](https://travis-ci.org/xploratics/koa-eula)
+[![dependencies Status](https://david-dm.org/xploratics/koa-eula/status.svg)](https://david-dm.org/xploratics/koa-eula)
+[![devDependencies Status](https://david-dm.org/xploratics/koa-eula/dev-status.svg)](https://david-dm.org/xploratics/koa-eula?type=dev)
+
 # koa-eula
 
 Koa middleware that validates JSON Web Tokens and sets `ctx.state.eula`
@@ -8,8 +12,8 @@ in your [Koa](http://koajs.com/) (node.js) applications.
 
 ## Installation
 
-```
-$ npm install koa-eula
+```bash
+npm install koa-eula
 ```
 
 ## Usage
@@ -17,7 +21,6 @@ $ npm install koa-eula
 The JWT eula middleware validate EULA acceptation of callers using a JWT
 token. If the token is valid, `ctx.state.eula` (by default) will be set
 with the JSON object decoded to be used by later middleware.
-
 
 ### Retrieving the token
 
@@ -38,9 +41,10 @@ should match the following interface:
 ```
 
 The resolution order for the token is the following. The first non-empty token resolved will be the one that is verified.
- - `opts.getToken` function
- - check the cookies (if `opts.cookie` is set)
- - check the Authorization header for a bearer token
+
+- `opts.getToken` function
+- check the cookies (if `opts.cookie` is set)
+- check the Authorization header for a bearer token
 
 ### Passing the secret
 
@@ -48,7 +52,6 @@ Normally you provide a single shared secret in `opts.secret`, but another
 alternative is to have an earlier middleware set `ctx.state.secret`,
 typically per request. If this property exists, it will be used instead
 of the one in `opts.secret`.
-
 
 ## Example
 
@@ -92,7 +95,6 @@ app.use(function (ctx){
 app.listen(3000);
 ```
 
-
 Alternatively you can conditionally run the `eula` middleware under certain conditions:
 
 ```js
@@ -128,40 +130,46 @@ For more information on `unless` exceptions, check [koa-unless](https://github.c
 
 You can also add the `passthrough` option to always yield next,
 even if no valid Authorization header was found:
+
 ```js
 app.use(eula({ secret: 'shared-secret', passthrough: true }));
 ```
+
 This lets downstream middleware make decisions based on whether `ctx.state.user` is set.
 
-
 If you prefer to use another ctx key for the decoded data, just pass in `key`, like so:
+
 ```js
 app.use(eula({ secret: 'shared-secret', key: 'euladata' }));
 ```
+
 This makes the decoded data available as `ctx.state.euladata`.
 
 If the `tokenKey` option is present, and a valid token is found, the original raw token
 is made available to subsequent middleware as `ctx.state[opts.tokenKey]`.
 
 You can specify audience and/or issuer as well:
+
 ```js
 app.use(eula({ secret:   'shared-secret',
                audience: 'http://myapi/protected',
                issuer:   'http://issuer' }));
 ```
+
 If the eula has an expiration (`exp`), it will be checked.
 
 ## Tests
 
-    $ npm install
-    $ npm test
+```bash
+npm install
+npm test
+```
 
 ## Credits
 
 This code is largely based on [koa-jwt](https://github.com/koa/koa-jwt).
 
-  - [Stian Grytøyr](http://stian.grytoyr.net/)
-
+- [Stian Grytøyr](http://stian.grytoyr.net/)
 
 ## License
 

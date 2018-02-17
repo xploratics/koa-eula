@@ -107,9 +107,7 @@ describe('failure tests', function () {
     const app = new koa();
 
     app.use(koaeula({ secret: secret, cookie: 'jwt' }));
-    app.use(function* (next) {
-      this.body = this.state.eula;
-    });
+    app.use(async next => this.body = this.state.eula);
 
     request(app.listen())
       .get('/')
