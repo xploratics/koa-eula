@@ -26,12 +26,10 @@
     "name": "Dany Laporte",
     "email": "dany.laporte@gmail.com"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/MIT"
-    }
-  ],
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/MIT"
+  }],
   "main": "./lib",
   "dependencies": {
     "jsonwebtoken": "^8.1.1",
@@ -39,7 +37,7 @@
   },
   "devDependencies": {
     "koa": "^2.5.0",
-    "mocha": "~3.2.0",
+    "mocha": "~5.0.1",
     "nyc": "^11.4.1",
     "supertest": "~3.0.0"
   },
